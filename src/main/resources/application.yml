@@ -1,0 +1,11 @@
+server:
+  port: 9092
+
+logging:
+  level:
+    web: debug
+
+app:
+  mongodb:
+    host: localhost
+    port: 27017
