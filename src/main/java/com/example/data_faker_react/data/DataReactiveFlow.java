@@ -37,4 +37,8 @@ public class DataReactiveFlow {
     private LocalDateTime date;
     @Field
     private Benef benef;
+
+    public DataReactiveFlow() {
+        this.date = LocalDateTime.now();
+    }
 }

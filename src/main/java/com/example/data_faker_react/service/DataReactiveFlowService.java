@@ -4,7 +4,6 @@ import com.example.data_faker_react.data.DataReactiveFlow;
 import com.example.data_faker_react.utils.DataReactiveFlowGenerate;
 import com.mongodb.client.result.DeleteResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -25,7 +24,7 @@ public class DataReactiveFlowService {
     private final Executor fakerExecutor;
 
     public DataReactiveFlowService(ReactiveMongoTemplate reactiveMongoTemplate,
-                                   @Qualifier("fakerExecutor") Executor fakerExecutor) {
+                                   Executor fakerExecutor) {
         this.reactiveMongoTemplate = reactiveMongoTemplate;
         this.fakerExecutor = fakerExecutor;
     }
