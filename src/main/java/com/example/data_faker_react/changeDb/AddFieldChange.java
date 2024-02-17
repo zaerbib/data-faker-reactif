@@ -20,7 +20,7 @@ import static com.example.data_faker_react.utils.DataReactiveFlowChangeLogsUtils
 import static com.example.data_faker_react.utils.DataReactiveFlowChangeLogsUtils.changeUnitExecution;
 
 @Slf4j
-@ChangeUnit(id="add-field-change-react", order = "001", author = "dev")
+@ChangeUnit(id = "add-field-change-react", order = "001", author = "dev")
 public class AddFieldChange {
 
     private static final String COLLECTION = "dataReactiveFlow";
@@ -35,24 +35,16 @@ public class AddFieldChange {
         // think to rollBack
     }
 
-    private void makeChange(DataReactiveFlow dataReactiveFlow) {
-        Double diff = dataReactiveFlow.getClose() - dataReactiveFlow.getOpen();
-        Double invest = dataReactiveFlow.getVolume() - (dataReactiveFlow.getVolume() * dataReactiveFlow.getDividend());
-        dataReactiveFlow.setBenef(Benef.builder()
-                .diff(diff)
-                .invest(invest)
-                .build());
-    }
-
     private Function<DataReactiveFlow, UpdateResult> getDataUpdate(MongoDatabase mongoDatabase) {
         MongoCollection<DataReactiveFlow> collection = mongoDatabase.getCollection(DATA_REACT_FLOW, DataReactiveFlow.class);
         return dataReactiveFlow -> {
             SubscriberSync<UpdateResult> updateSubcriber = new MongoSubscriberSync<>();
-            Double diff = dataReactiveFlow.getClose() - dataReactiveFlow.getOpen();
-            Double invest = dataReactiveFlow.getVolume() - (dataReactiveFlow.getVolume() * dataReactiveFlow.getDividend());
+            double diff = dataReactiveFlow.getClose() - dataReactiveFlow.getOpen();
+            double invest = dataReactiveFlow.getVolume() - (dataReactiveFlow.getVolume() * dataReactiveFlow.getDividend());
             dataReactiveFlow.setBenef(Benef.builder()
                     .diff(diff)
                     .invest(invest)
+                    .state(diff > 0 ? "up" : "down")
                     .build());
             collection.updateOne(getQuery(dataReactiveFlow), fromDataToDocumentUpdate(dataReactiveFlow)).subscribe(updateSubcriber);
             return updateSubcriber.getFirst();
